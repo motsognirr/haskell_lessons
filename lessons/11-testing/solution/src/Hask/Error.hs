@@ -1,15 +1,15 @@
 module Hask.Error
-  ( AppError(..)
-  , showError
+  ( HaskError(..)
+  , formatError
   ) where
 
-data AppError
+data HaskError
   = NoteNotFound Int
   | StorageError String
   | ParseError String
   deriving (Show, Eq)
 
-showError :: AppError -> String
-showError (NoteNotFound nid) = "Note not found: " ++ show nid
-showError (StorageError msg) = "Storage error: " ++ msg
-showError (ParseError msg)   = "Parse error: " ++ msg
+formatError :: HaskError -> String
+formatError (NoteNotFound nid) = "Error: note " ++ show nid ++ " not found."
+formatError (StorageError msg) = "Error: could not access storage -- " ++ msg
+formatError (ParseError msg)   = "Error: " ++ msg

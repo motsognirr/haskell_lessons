@@ -4,6 +4,7 @@ module Hask.Search
   ) where
 
 import Data.Char (toLower)
+import Data.List (isInfixOf)
 import Hask.Types (Note(..))
 
 -- | Search notes by a query string.  Matches against title, body, and tags
@@ -12,17 +13,9 @@ searchNotes :: String -> [Note] -> [Note]
 searchNotes query = filter (matchesNote (map toLower query))
   where
     matchesNote q note =
-      q `isInfixOfCI` title note
-        || q `isInfixOfCI` body note
-        || any (q `isInfixOfCI`) (tags note)
-
-    isInfixOfCI needle haystack = needle `isInfixOf'` map toLower haystack
-
-    isInfixOf' [] _          = True
-    isInfixOf' _  []         = False
-    isInfixOf' xs ys
-      | take (length xs) ys == xs = True
-      | otherwise                 = isInfixOf' xs (drop 1 ys)
+      q `isInfixOf` map toLower (title note)
+        || q `isInfixOf` map toLower (body note)
+        || any (q `isInfixOf`) (map (map toLower) (tags note))
 
 -- | Filter notes that contain a specific tag.
 filterByTag :: String -> [Note] -> [Note]

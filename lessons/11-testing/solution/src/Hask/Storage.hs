@@ -14,7 +14,7 @@ import Hask.Error
 notesFile :: FilePath
 notesFile = "notes.json"
 
-loadNotes :: FilePath -> IO (Either AppError [Note])
+loadNotes :: FilePath -> IO (Either HaskError [Note])
 loadNotes path = do
   exists <- doesFileExist path
   if not exists
@@ -25,7 +25,7 @@ loadNotes path = do
         Left err    -> return (Left (ParseError err))
         Right notes -> return (Right notes)
 
-saveNotes :: FilePath -> [Note] -> IO (Either AppError ())
+saveNotes :: FilePath -> [Note] -> IO (Either HaskError ())
 saveNotes path notes = do
   BL.writeFile path (encode notes)
   return (Right ())

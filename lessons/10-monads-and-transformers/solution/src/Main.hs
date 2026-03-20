@@ -5,7 +5,7 @@ import Options.Applicative (execParser)
 
 import Hask.App (AppConfig(..), App, runApp)
 import Hask.CLI (Options(..), Command(..), optsInfo)
-import Hask.Error (renderError)
+import Hask.Error (formatError)
 import Hask.Storage (addNote, listNotes, deleteNote, searchNotesCmd)
 
 -- | Map a CLI command to the corresponding App action.
@@ -25,7 +25,7 @@ main = do
     result <- runApp config (dispatch (optCommand opts))
     case result of
       Left err -> do
-        putStrLn $ "Error: " ++ renderError err
+        putStrLn (formatError err)
         exitFailure
       Right _ ->
         return ()

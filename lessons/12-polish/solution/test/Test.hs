@@ -2,12 +2,10 @@
 
 module Main where
 
-import Test.Hspec
 import Data.Aeson (encode, decode)
 import Data.List (isInfixOf)
-import Data.Text (Text)
-import qualified Data.Text as T
-import System.Directory (doesFileExist, removeFile)
+import Test.Tasty
+import Test.Tasty.HUnit
 
 import Hask.Types
 import Hask.Search
@@ -30,91 +28,96 @@ sampleNotes =
 -- -------------------------------------------------------------------
 
 main :: IO ()
-main = hspec $ do
+main = defaultMain $ testGroup "Hask Tests"
+  [ typesTests
+  , searchTests
+  , storageTests
+  , exportTests
+  ]
 
-  -- Types / JSON round-trip
-  describe "Hask.Types JSON" $ do
-    it "round-trips a Priority through JSON" $ do
-      decode (encode High)   `shouldBe` Just High
-      decode (encode Medium) `shouldBe` Just Medium
-      decode (encode Low)    `shouldBe` Just Low
+-- Types / JSON round-trip
+typesTests :: TestTree
+typesTests = testGroup "Hask.Types JSON"
+  [ testCase "round-trips a Priority through JSON" $ do
+      decode (encode High)   @?= Just High
+      decode (encode Medium) @?= Just Medium
+      decode (encode Low)    @?= Just Low
 
-    it "round-trips a Note through JSON" $ do
+  , testCase "round-trips a Note through JSON" $ do
       let note = Note 1 "Test" "Body" ["a", "b"] Medium
-      decode (encode note) `shouldBe` Just note
+      decode (encode note) @?= Just note
 
-    it "round-trips a list of notes through JSON" $ do
-      decode (encode sampleNotes) `shouldBe` Just sampleNotes
+  , testCase "round-trips a list of notes through JSON" $
+      decode (encode sampleNotes) @?= Just sampleNotes
+  ]
 
-  -- Search
-  describe "Hask.Search" $ do
-    it "finds notes by title" $ do
+-- Search
+searchTests :: TestTree
+searchTests = testGroup "Hask.Search"
+  [ testCase "finds notes by title" $ do
       let results = searchNotes "haskell" sampleNotes
-      length results `shouldBe` 2
+      length results @?= 2
 
-    it "is case-insensitive" $ do
+  , testCase "is case-insensitive" $ do
       let results = searchNotes "HASKELL" sampleNotes
-      length results `shouldBe` 2
+      length results @?= 2
 
-    it "finds notes by tag" $ do
+  , testCase "finds notes by tag" $ do
       let results = searchNotes "shopping" sampleNotes
-      length results `shouldBe` 1
+      length results @?= 1
 
-    it "finds notes by body" $ do
+  , testCase "finds notes by body" $ do
       let results = searchNotes "milk" sampleNotes
-      length results `shouldBe` 1
+      length results @?= 1
 
-    it "returns empty for no match" $ do
+  , testCase "returns empty for no match" $ do
       let results = searchNotes "nonexistent" sampleNotes
-      length results `shouldBe` 0
+      length results @?= 0
+  ]
 
-  -- Storage
-  describe "Hask.Storage" $ do
-    let testFile = "test_notes.json"
-
-    it "saves and loads notes" $ do
-      saveNotes testFile sampleNotes
-      result <- loadNotes testFile
-      result `shouldBe` Right sampleNotes
-      removeFile testFile
-
-    it "returns empty list for missing file" $ do
+-- Storage
+storageTests :: TestTree
+storageTests = testGroup "Hask.Storage"
+  [ testCase "returns empty list for missing file" $ do
       result <- loadNotes "does_not_exist.json"
-      result `shouldBe` Right []
+      result @?= Right []
 
-    it "getNextId returns 1 for empty list" $ do
-      getNextId [] `shouldBe` 1
+  , testCase "getNextId returns 1 for empty list" $
+      getNextId [] @?= 1
 
-    it "getNextId returns max + 1" $ do
-      getNextId sampleNotes `shouldBe` 4
+  , testCase "getNextId returns max + 1" $
+      getNextId sampleNotes @?= 4
+  ]
 
-  -- Export
-  describe "Hask.Export" $ do
-    it "exports Markdown containing titles" $ do
+-- Export
+exportTests :: TestTree
+exportTests = testGroup "Hask.Export"
+  [ testCase "exports Markdown containing titles" $ do
       let md = exportNotes Markdown sampleNotes
-      "Learn Haskell" `shouldSatisfy` (`isInfixOf` md)
-      "Buy groceries" `shouldSatisfy` (`isInfixOf` md)
+      assertBool "Learn Haskell in markdown" ("Learn Haskell" `isInfixOf` md)
+      assertBool "Buy groceries in markdown" ("Buy groceries" `isInfixOf` md)
 
-    it "exports Markdown with priority" $ do
+  , testCase "exports Markdown with priority" $ do
       let md = exportNotes Markdown sampleNotes
-      "High" `shouldSatisfy` (`isInfixOf` md)
+      assertBool "High priority in markdown" ("High" `isInfixOf` md)
 
-    it "exports CSV with header" $ do
+  , testCase "exports CSV with header" $ do
       let csv = exportNotes CSV sampleNotes
-      "id,title,body,tags,priority" `shouldSatisfy` (`isInfixOf` csv)
+      assertBool "CSV header" ("id,title,body,tags,priority" `isInfixOf` csv)
 
-    it "exports CSV containing titles" $ do
+  , testCase "exports CSV containing titles" $ do
       let csv = exportNotes CSV sampleNotes
-      "Learn Haskell" `shouldSatisfy` (`isInfixOf` csv)
+      assertBool "Learn Haskell in csv" ("Learn Haskell" `isInfixOf` csv)
 
-    it "exports JSON containing titles" $ do
+  , testCase "exports JSON containing titles" $ do
       let json = exportNotes JSON sampleNotes
-      "Learn Haskell" `shouldSatisfy` (`isInfixOf` json)
+      assertBool "Learn Haskell in json" ("Learn Haskell" `isInfixOf` json)
 
-    it "parseExportFormat parses valid formats" $ do
-      parseExportFormat "md"   `shouldBe` Just Markdown
-      parseExportFormat "csv"  `shouldBe` Just CSV
-      parseExportFormat "json" `shouldBe` Just JSON
+  , testCase "parseExportFormat parses valid formats" $ do
+      parseExportFormat "md"   @?= Just Markdown
+      parseExportFormat "csv"  @?= Just CSV
+      parseExportFormat "json" @?= Just JSON
 
-    it "parseExportFormat rejects invalid formats" $ do
-      parseExportFormat "xml" `shouldBe` Nothing
+  , testCase "parseExportFormat rejects invalid formats" $
+      parseExportFormat "xml" @?= Nothing
+  ]

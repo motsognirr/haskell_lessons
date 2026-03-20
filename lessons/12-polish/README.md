@@ -319,7 +319,7 @@ scratch. Along the way you have learned:
 | 08     | Error handling (Maybe, Either)     |
 | 09     | Libraries (aeson, optparse)        |
 | 10     | Monads and transformers            |
-| 11     | Testing (HSpec, QuickCheck)        |
+| 11     | Testing (Tasty, HUnit, QuickCheck) |
 | 12     | Polish and ship                    |
 
 ### Where to Go Next

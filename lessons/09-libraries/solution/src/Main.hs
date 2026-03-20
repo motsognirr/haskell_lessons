@@ -23,7 +23,7 @@ handleAdd :: AddOpts -> IO ()
 handleAdd (AddOpts t rawTags prio) = do
   result <- loadStore notesFile
   case result of
-    Left err -> putStrLn (showError (StorageError err))
+    Left err -> putStrLn (formatError (StorageError err))
     Right store -> do
       let nid  = nextId store
           note = Note
@@ -44,7 +44,7 @@ handleList :: ListOpts -> IO ()
 handleList (ListOpts maybeTag) = do
   result <- loadStore notesFile
   case result of
-    Left err -> putStrLn (showError (StorageError err))
+    Left err -> putStrLn (formatError (StorageError err))
     Right store -> do
       let ns = case maybeTag of
                  Nothing  -> notes store
@@ -57,7 +57,7 @@ handleSearch :: String -> IO ()
 handleSearch query = do
   result <- loadStore notesFile
   case result of
-    Left err -> putStrLn (showError (StorageError err))
+    Left err -> putStrLn (formatError (StorageError err))
     Right store -> do
       let found = searchNotes query (notes store)
       if null found
@@ -68,11 +68,11 @@ handleDelete :: Int -> IO ()
 handleDelete nid = do
   result <- loadStore notesFile
   case result of
-    Left err -> putStrLn (showError (StorageError err))
+    Left err -> putStrLn (formatError (StorageError err))
     Right store -> do
       let (matching, remaining) = partition ((== nid) . noteId) (notes store)
       if null matching
-        then putStrLn (showError (NoteNotFound nid))
+        then putStrLn (formatError (NoteNotFound nid))
         else do
           let store' = store { notes = remaining }
           saveStore notesFile store'

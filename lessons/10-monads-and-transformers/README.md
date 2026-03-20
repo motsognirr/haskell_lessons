@@ -366,7 +366,7 @@ main = do
     result <- runApp config (dispatch opts)
     case result of
       Left err -> do
-        putStrLn $ "Error: " ++ renderError err
+        putStrLn (formatError err)
         exitFailure
       Right _ -> return ()
 ```

@@ -191,7 +191,7 @@ main = do
           }
     result <- runApp config (dispatch (optCommand opts))
     case result of
-      Left err -> putStrLn $ "Error: " ++ renderError err
+      Left err -> putStrLn (formatError err)
       Right _  -> return ()
 ```
 

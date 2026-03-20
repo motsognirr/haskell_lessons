@@ -1,15 +1,15 @@
 module Hask.Error
   ( HaskError(..)
-  , renderError
+  , formatError
   ) where
 
 data HaskError
   = NoteNotFound Int
+  | StorageError String
   | ParseError String
-  | IOError String
   deriving (Show, Eq)
 
-renderError :: HaskError -> String
-renderError (NoteNotFound nid) = "Note with id " ++ show nid ++ " not found"
-renderError (ParseError msg)   = "Failed to parse notes file: " ++ msg
-renderError (IOError msg)      = "IO error: " ++ msg
+formatError :: HaskError -> String
+formatError (NoteNotFound nid) = "Error: note " ++ show nid ++ " not found."
+formatError (StorageError msg) = "Error: could not access storage -- " ++ msg
+formatError (ParseError msg)   = "Error: " ++ msg

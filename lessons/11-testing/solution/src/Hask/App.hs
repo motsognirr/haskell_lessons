@@ -23,21 +23,21 @@ doAdd :: String -> String -> [String] -> String -> IO ()
 doAdd t b tgs p = do
   result <- loadNotes notesFile
   case result of
-    Left err -> putStrLn (showError err)
+    Left err -> putStrLn (formatError err)
     Right notes -> do
       let nid = if null notes then 1 else maximum (map noteId notes) + 1
           pri = parsePriority p
           note = Note nid t b tgs pri
       saveResult <- saveNotes notesFile (notes ++ [note])
       case saveResult of
-        Left err -> putStrLn (showError err)
+        Left err -> putStrLn (formatError err)
         Right () -> putStrLn ("Added note " ++ show nid ++ ": " ++ t)
 
 doList :: Maybe String -> IO ()
 doList mtag = do
   result <- loadNotes notesFile
   case result of
-    Left err -> putStrLn (showError err)
+    Left err -> putStrLn (formatError err)
     Right notes -> do
       let filtered = case mtag of
             Nothing  -> notes
@@ -50,7 +50,7 @@ doSearch :: String -> IO ()
 doSearch q = do
   result <- loadNotes notesFile
   case result of
-    Left err -> putStrLn (showError err)
+    Left err -> putStrLn (formatError err)
     Right notes -> do
       let results = searchNotes q notes
       if null results
@@ -61,15 +61,15 @@ doDelete :: Int -> IO ()
 doDelete nid = do
   result <- loadNotes notesFile
   case result of
-    Left err -> putStrLn (showError err)
+    Left err -> putStrLn (formatError err)
     Right notes -> do
       let remaining = filter (\n -> noteId n /= nid) notes
       if length remaining == length notes
-        then putStrLn (showError (NoteNotFound nid))
+        then putStrLn (formatError (NoteNotFound nid))
         else do
           saveResult <- saveNotes notesFile remaining
           case saveResult of
-            Left err -> putStrLn (showError err)
+            Left err -> putStrLn (formatError err)
             Right () -> putStrLn ("Deleted note " ++ show nid)
 
 printNote :: Note -> IO ()
