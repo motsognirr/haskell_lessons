@@ -1,0 +1,63 @@
+{
+  "lesson": 3,
+  "checks": [
+    {
+      "type": "file_exists",
+      "path": "lessons/03-recursion-hof/Main.hs",
+      "description": "Main.hs exists"
+    },
+    {
+      "type": "file_contains",
+      "path": "lessons/03-recursion-hof/Main.hs",
+      "pattern": "myMap",
+      "description": "Defines myMap function"
+    },
+    {
+      "type": "file_contains",
+      "path": "lessons/03-recursion-hof/Main.hs",
+      "pattern": "myFilter",
+      "description": "Defines myFilter function"
+    },
+    {
+      "type": "file_contains",
+      "path": "lessons/03-recursion-hof/Main.hs",
+      "pattern": "myFoldl",
+      "description": "Defines myFoldl function"
+    },
+    {
+      "type": "compile",
+      "command": "cd lessons/03-recursion-hof && ghc -o hof Main.hs",
+      "description": "Code compiles successfully"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/03-recursion-hof && ./hof",
+      "expected_output": "[2,3,4]",
+      "description": "myMap (+1) [1,2,3] = [2,3,4]"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/03-recursion-hof && ./hof",
+      "expected_output": "[2,4]",
+      "description": "myFilter even [1,2,3,4,5] = [2,4]"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/03-recursion-hof && ./hof",
+      "expected_output": "15",
+      "description": "myFoldl (+) 0 [1,2,3,4,5] = 15"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/03-recursion-hof && ./hof",
+      "expected_output": "[2,4,6]",
+      "description": "doubleAll or keepEvens works"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/03-recursion-hof && ./hof",
+      "expected_output": "14",
+      "description": "sumSquares [1,2,3] = 14"
+    }
+  ]
+}

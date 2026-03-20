@@ -1,0 +1,57 @@
+{
+  "lesson": 4,
+  "checks": [
+    {
+      "type": "file_exists",
+      "path": "lessons/04-adt/Main.hs",
+      "description": "Main.hs exists"
+    },
+    {
+      "type": "file_contains",
+      "path": "lessons/04-adt/Main.hs",
+      "pattern": "data\\s+Priority",
+      "description": "Defines Priority type"
+    },
+    {
+      "type": "file_contains",
+      "path": "lessons/04-adt/Main.hs",
+      "pattern": "data\\s+Note",
+      "description": "Defines Note type"
+    },
+    {
+      "type": "file_contains",
+      "path": "lessons/04-adt/Main.hs",
+      "pattern": "data\\s+NoteAction",
+      "description": "Defines NoteAction type"
+    },
+    {
+      "type": "compile",
+      "command": "cd lessons/04-adt && ghc -o adt Main.hs",
+      "description": "Code compiles successfully"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/04-adt && ./adt",
+      "expected_output": "2",
+      "description": "filterByTag returns correct count"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/04-adt && ./adt",
+      "expected_output": "1",
+      "description": "filterByPriority returns correct count"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/04-adt && ./adt",
+      "expected_output": "Adding",
+      "description": "describeAction handles Add"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/04-adt && ./adt",
+      "expected_output": "Searching",
+      "description": "describeAction handles Search"
+    }
+  ]
+}

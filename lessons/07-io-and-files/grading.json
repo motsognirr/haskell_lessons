@@ -1,0 +1,56 @@
+{
+  "lesson": 7,
+  "checks": [
+    {
+      "type": "file_exists",
+      "path": "app/src/Hask/Storage.hs",
+      "description": "Storage.hs module exists"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/Storage.hs",
+      "pattern": "module\\s+Hask\\.Storage",
+      "description": "Storage.hs declares module Hask.Storage"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/Storage.hs",
+      "pattern": "saveNotes",
+      "description": "Storage defines saveNotes"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/Storage.hs",
+      "pattern": "loadNotes",
+      "description": "Storage defines loadNotes"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/hask.cabal",
+      "pattern": "Hask\\.Storage",
+      "description": "cabal file includes Hask.Storage"
+    },
+    {
+      "type": "compile",
+      "command": "cd app && cabal build",
+      "description": "Project compiles"
+    },
+    {
+      "type": "run_sequence",
+      "steps": [
+        { "command": "cd app && rm -f notes.dat && cabal run hask -- add \"Test Note\" 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- list 2>/dev/null", "expected_output": "Test Note" }
+      ],
+      "description": "Can add a note and list it"
+    },
+    {
+      "type": "run_sequence",
+      "steps": [
+        { "command": "cd app && rm -f notes.dat && cabal run hask -- add \"Haskell Fun\" 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- add \"Other Thing\" 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- search \"haskell\" 2>/dev/null", "expected_output": "Haskell" }
+      ],
+      "description": "Search works with persisted notes"
+    }
+  ]
+}

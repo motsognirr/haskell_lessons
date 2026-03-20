@@ -1,0 +1,45 @@
+cabal-version: 2.4
+name:          hask
+version:       0.1.0.0
+synopsis:      A CLI note manager
+license:       MIT
+
+library
+  hs-source-dirs:   src
+  exposed-modules:
+    Hask.Types
+    Hask.Search
+    Hask.Storage
+    Hask.Error
+    Hask.App
+    Hask.CLI
+  build-depends:
+    base >= 4.14 && < 5,
+    aeson >= 2.0,
+    bytestring,
+    directory,
+    optparse-applicative >= 0.16,
+    mtl,
+    filepath
+  default-language: Haskell2010
+
+executable hask
+  main-is:          Main.hs
+  hs-source-dirs:   src
+  build-depends:
+    base >= 4.14 && < 5,
+    hask
+  default-language: Haskell2010
+
+test-suite hask-tests
+  type:             exitcode-stdio-1.0
+  main-is:          Test.hs
+  hs-source-dirs:   test
+  build-depends:
+    base >= 4.14 && < 5,
+    hask,
+    tasty,
+    tasty-hunit,
+    tasty-quickcheck,
+    QuickCheck
+  default-language: Haskell2010

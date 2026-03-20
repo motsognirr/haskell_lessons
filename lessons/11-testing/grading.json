@@ -1,0 +1,38 @@
+{
+  "lesson": 11,
+  "checks": [
+    {
+      "type": "file_exists",
+      "path": "app/test/Test.hs",
+      "description": "Test.hs exists"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/hask.cabal",
+      "pattern": "test-suite",
+      "description": "cabal file has test-suite section"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/test/Test.hs",
+      "pattern": "QuickCheck|testProperty|quickCheck",
+      "description": "Tests include property-based tests"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/test/Test.hs",
+      "pattern": "testCase|assertEqual|HUnit|@\\?=",
+      "description": "Tests include unit tests"
+    },
+    {
+      "type": "compile",
+      "command": "cd app && cabal build all",
+      "description": "Project and tests compile"
+    },
+    {
+      "type": "cabal_test",
+      "directory": "app",
+      "description": "All tests pass"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "lesson": 6,
+  "checks": [
+    {
+      "type": "file_exists",
+      "path": "app/hask.cabal",
+      "description": "hask.cabal exists"
+    },
+    {
+      "type": "file_exists",
+      "path": "app/src/Main.hs",
+      "description": "Main.hs exists in src/"
+    },
+    {
+      "type": "file_exists",
+      "path": "app/src/Hask/Types.hs",
+      "description": "Hask/Types.hs module exists"
+    },
+    {
+      "type": "file_exists",
+      "path": "app/src/Hask/Search.hs",
+      "description": "Hask/Search.hs module exists"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/Types.hs",
+      "pattern": "module\\s+Hask\\.Types",
+      "description": "Types.hs declares module Hask.Types"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/Search.hs",
+      "pattern": "module\\s+Hask\\.Search",
+      "description": "Search.hs declares module Hask.Search"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/Search.hs",
+      "pattern": "searchNotes",
+      "description": "Search module defines searchNotes"
+    },
+    {
+      "type": "compile",
+      "command": "cd app && cabal build",
+      "description": "Project compiles with cabal build"
+    },
+    {
+      "type": "run",
+      "command": "cd app && cabal run hask 2>/dev/null",
+      "expected_output": "Usage:",
+      "description": "Running with no args shows usage"
+    },
+    {
+      "type": "run",
+      "command": "cd app && cabal run hask -- search \"haskell\" 2>/dev/null",
+      "expected_output": "haskell",
+      "description": "Search finds notes containing 'haskell'"
+    }
+  ]
+}

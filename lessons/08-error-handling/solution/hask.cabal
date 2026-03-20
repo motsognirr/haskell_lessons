@@ -1,0 +1,18 @@
+cabal-version: 2.4
+name:          hask
+version:       0.1.0.0
+synopsis:      A CLI note manager
+license:       MIT
+
+executable hask
+  main-is:          Main.hs
+  hs-source-dirs:   src
+  build-depends:
+    base >= 4.14 && < 5,
+    directory >= 1.3
+  default-language: Haskell2010
+  other-modules:
+    Hask.Types
+    Hask.Search
+    Hask.Storage
+    Hask.Error

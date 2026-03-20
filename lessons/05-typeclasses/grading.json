@@ -1,0 +1,51 @@
+{
+  "lesson": 5,
+  "checks": [
+    {
+      "type": "file_exists",
+      "path": "lessons/05-typeclasses/Main.hs",
+      "description": "Main.hs exists"
+    },
+    {
+      "type": "file_contains",
+      "path": "lessons/05-typeclasses/Main.hs",
+      "pattern": "class\\s+Searchable",
+      "description": "Defines Searchable typeclass"
+    },
+    {
+      "type": "file_contains",
+      "path": "lessons/05-typeclasses/Main.hs",
+      "pattern": "instance\\s+Show\\s+Priority",
+      "description": "Custom Show instance for Priority"
+    },
+    {
+      "type": "compile",
+      "command": "cd lessons/05-typeclasses && ghc -o typeclasses Main.hs",
+      "description": "Code compiles successfully"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/05-typeclasses && ./typeclasses",
+      "expected_output": "[!!!]",
+      "description": "Custom Show for High priority works"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/05-typeclasses && ./typeclasses",
+      "expected_output": "tags: haskell",
+      "description": "Displayable instance for Note works"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/05-typeclasses && ./typeclasses",
+      "expected_output": "True",
+      "description": "Searchable finds matching term"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/05-typeclasses && ./typeclasses",
+      "expected_output": "False",
+      "description": "Searchable returns False for non-match"
+    }
+  ]
+}

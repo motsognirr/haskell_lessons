@@ -1,0 +1,56 @@
+{
+  "lesson": 9,
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "app/hask.cabal",
+      "pattern": "aeson",
+      "description": "cabal file includes aeson dependency"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/hask.cabal",
+      "pattern": "optparse-applicative",
+      "description": "cabal file includes optparse-applicative dependency"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/Types.hs",
+      "pattern": "ToJSON|FromJSON",
+      "description": "Types have JSON instances"
+    },
+    {
+      "type": "compile",
+      "command": "cd app && cabal build",
+      "description": "Project compiles with new dependencies"
+    },
+    {
+      "type": "run_sequence",
+      "steps": [
+        { "command": "cd app && rm -f notes.json && cabal run hask -- add \"JSON Test\" --tags \"test,json\" 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- list 2>/dev/null", "expected_output": "JSON Test" }
+      ],
+      "description": "Add with tags works"
+    },
+    {
+      "type": "run_sequence",
+      "steps": [
+        { "command": "cd app && rm -f notes.json && cabal run hask -- add \"Tagged Note\" --tags \"haskell,fp\" 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- list --tag haskell 2>/dev/null", "expected_output": "Tagged Note" }
+      ],
+      "description": "List with tag filter works"
+    },
+    {
+      "type": "run",
+      "command": "cd app && cat notes.json 2>/dev/null || echo 'no file'",
+      "expected_output": "{",
+      "description": "Notes stored as JSON"
+    },
+    {
+      "type": "run",
+      "command": "cd app && cabal run hask -- add --help 2>&1 || true",
+      "expected_output": "add",
+      "description": "CLI help works"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "lesson": 1,
+  "checks": [
+    {
+      "type": "file_exists",
+      "path": "lessons/01-types-and-functions/Main.hs",
+      "description": "Main.hs exists"
+    },
+    {
+      "type": "file_contains",
+      "path": "lessons/01-types-and-functions/Main.hs",
+      "pattern": "celsiusToFahrenheit\\s*::\\s*Double\\s*->\\s*Double",
+      "description": "celsiusToFahrenheit has type signature"
+    },
+    {
+      "type": "file_contains",
+      "path": "lessons/01-types-and-functions/Main.hs",
+      "pattern": "fahrenheitToCelsius\\s*::\\s*Double\\s*->\\s*Double",
+      "description": "fahrenheitToCelsius has type signature"
+    },
+    {
+      "type": "compile",
+      "command": "cd lessons/01-types-and-functions && ghc -o types Main.hs",
+      "description": "Code compiles successfully"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/01-types-and-functions && ./types",
+      "expected_output": "212.0",
+      "description": "celsiusToFahrenheit 100 = 212.0"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/01-types-and-functions && ./types",
+      "expected_output": "0.0",
+      "description": "fahrenheitToCelsius 32 = 0.0"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/01-types-and-functions && ./types",
+      "expected_output": "Hello, John Doe!",
+      "description": "greet works correctly"
+    },
+    {
+      "type": "run",
+      "command": "cd lessons/01-types-and-functions && ./types",
+      "expected_output": "J.D.",
+      "description": "initials works correctly"
+    }
+  ]
+}

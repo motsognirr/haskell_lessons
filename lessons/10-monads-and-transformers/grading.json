@@ -1,0 +1,53 @@
+{
+  "lesson": 10,
+  "checks": [
+    {
+      "type": "file_exists",
+      "path": "app/src/Hask/App.hs",
+      "description": "App.hs module exists"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/App.hs",
+      "pattern": "AppConfig",
+      "description": "Defines AppConfig"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/App.hs",
+      "pattern": "ExceptT|ExceptT.*ReaderT",
+      "description": "Uses ExceptT transformer"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/App.hs",
+      "pattern": "runApp",
+      "description": "Defines runApp"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/hask.cabal",
+      "pattern": "mtl|transformers",
+      "description": "cabal includes mtl or transformers"
+    },
+    {
+      "type": "compile",
+      "command": "cd app && cabal build",
+      "description": "Project compiles with monad stack"
+    },
+    {
+      "type": "run_sequence",
+      "steps": [
+        { "command": "cd app && rm -f notes.json && cabal run hask -- add \"Monad Test\" 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- list 2>/dev/null", "expected_output": "Monad Test" }
+      ],
+      "description": "App still works after refactor"
+    },
+    {
+      "type": "run",
+      "command": "cd app && cabal run hask -- delete 999 2>/dev/null",
+      "expected_output": "not found",
+      "description": "Error handling still works"
+    }
+  ]
+}

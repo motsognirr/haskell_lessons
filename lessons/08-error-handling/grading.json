@@ -1,0 +1,54 @@
+{
+  "lesson": 8,
+  "checks": [
+    {
+      "type": "file_exists",
+      "path": "app/src/Hask/Error.hs",
+      "description": "Error.hs module exists"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/Error.hs",
+      "pattern": "data\\s+HaskError",
+      "description": "Defines HaskError type"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/Error.hs",
+      "pattern": "NoteNotFound",
+      "description": "Has NoteNotFound constructor"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/hask.cabal",
+      "pattern": "Hask\\.Error",
+      "description": "cabal file includes Hask.Error"
+    },
+    {
+      "type": "compile",
+      "command": "cd app && cabal build",
+      "description": "Project compiles"
+    },
+    {
+      "type": "run",
+      "command": "cd app && cabal run hask -- delete 999 2>/dev/null",
+      "expected_output": "not found",
+      "description": "Deleting non-existent note shows error"
+    },
+    {
+      "type": "run_sequence",
+      "steps": [
+        { "command": "cd app && rm -f notes.dat && cabal run hask -- add \"Delete Me\" 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- delete 1 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- list 2>/dev/null", "expected_output": "" }
+      ],
+      "description": "Can add then delete a note"
+    },
+    {
+      "type": "run",
+      "command": "cd app && cabal run hask -- badcommand 2>/dev/null",
+      "expected_output": "Usage",
+      "description": "Invalid command shows usage, doesn't crash"
+    }
+  ]
+}

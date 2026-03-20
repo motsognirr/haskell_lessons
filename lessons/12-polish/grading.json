@@ -1,0 +1,57 @@
+{
+  "lesson": 12,
+  "checks": [
+    {
+      "type": "file_contains",
+      "path": "app/hask.cabal",
+      "pattern": "ansi-terminal",
+      "description": "cabal file includes ansi-terminal"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/hask.cabal",
+      "pattern": "text",
+      "description": "cabal file includes text package"
+    },
+    {
+      "type": "file_contains",
+      "path": "app/src/Hask/Types.hs",
+      "pattern": "Data\\.Text|import.*Text",
+      "description": "Types module uses Data.Text"
+    },
+    {
+      "type": "compile",
+      "command": "cd app && cabal build",
+      "description": "Project compiles with new dependencies"
+    },
+    {
+      "type": "run_sequence",
+      "steps": [
+        { "command": "cd app && rm -f notes.json && cabal run hask -- add \"Export Test\" --tags \"test,export\" 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- export --format md 2>/dev/null", "expected_output": "Export Test" }
+      ],
+      "description": "Markdown export works"
+    },
+    {
+      "type": "run_sequence",
+      "steps": [
+        { "command": "cd app && rm -f notes.json && cabal run hask -- add \"CSV Test\" --tags \"csv\" 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- export --format csv 2>/dev/null", "expected_output": "CSV Test" }
+      ],
+      "description": "CSV export works"
+    },
+    {
+      "type": "run_sequence",
+      "steps": [
+        { "command": "cd app && rm -f notes.json && cabal run hask -- add \"JSON Test\" 2>/dev/null", "expected_output": "" },
+        { "command": "cd app && cabal run hask -- export --format json 2>/dev/null", "expected_output": "JSON Test" }
+      ],
+      "description": "JSON export works"
+    },
+    {
+      "type": "cabal_test",
+      "directory": "app",
+      "description": "All tests still pass"
+    }
+  ]
+}
