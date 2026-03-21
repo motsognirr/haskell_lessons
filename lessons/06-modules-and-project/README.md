@@ -86,6 +86,8 @@ Key sections:
 - **build-depends**: Library dependencies
 - **other-modules**: Non-Main modules that are part of this executable
 
+> **Preview:** A `.cabal` file can also have a `library` section that exposes modules for reuse by other parts of the project (like tests). We'll use `executable` for now and restructure to include a `library` in Lesson 11 when we add tests.
+
 ### cabal.project (optional)
 
 For simple projects, you don't need this. But it's common to have one:

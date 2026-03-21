@@ -18,6 +18,10 @@ Over 13 lessons (00-12), you'll learn Haskell from scratch and build **`hask`** 
 - Claude Code installed and configured
 - Some programming experience (any language)
 
+## Important
+
+Lessons must be completed in order (00 -> 12). Lessons 06-12 build on each other incrementally -- each one adds to the `hask` app created in lesson 06.
+
 ## Getting Started
 
 1. Open this directory in Claude Code

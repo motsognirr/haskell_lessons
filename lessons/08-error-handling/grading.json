@@ -39,8 +39,8 @@
       "type": "run_sequence",
       "steps": [
         { "command": "cd app && rm -f notes.dat && cabal run hask -- add \"Delete Me\" 2>/dev/null", "expected_output": "" },
-        { "command": "cd app && cabal run hask -- delete 1 2>/dev/null", "expected_output": "" },
-        { "command": "cd app && cabal run hask -- list 2>/dev/null", "expected_output": "" }
+        { "command": "cd app && cabal run hask -- delete 1 2>/dev/null", "expected_output": "Deleted" },
+        { "command": "cd app && cabal run hask -- list 2>/dev/null", "expected_output": "No notes" }
       ],
       "description": "Can add then delete a note"
     },
